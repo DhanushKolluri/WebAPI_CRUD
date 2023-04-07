@@ -32,5 +32,16 @@ namespace WebAPI_CRUD.Controllers
 
             return Ok(employeeRequest);
         }
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetEmployee([FromRoute] Guid id)
+        {
+            var employee = await fullStackDbContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return Ok(employee);
+        }
     }
 }

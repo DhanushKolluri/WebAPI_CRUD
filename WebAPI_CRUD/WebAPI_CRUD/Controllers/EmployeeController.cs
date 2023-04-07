@@ -43,5 +43,25 @@ namespace WebAPI_CRUD.Controllers
             }
             return Ok(employee);
         }
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateEmployee([FromRoute] Guid id, Employee updateEmployeeRequest)
+        {
+            var employee = await fullStackDbContext.Employees.FindAsync(id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            employee.Name = updateEmployeeRequest.Name;
+            employee.Email = updateEmployeeRequest.Email;
+            employee.Salary = updateEmployeeRequest.Salary;
+            employee.Phone = updateEmployeeRequest.Phone;
+            employee.Department = updateEmployeeRequest.Department;
+
+            await fullStackDbContext.SaveChangesAsync();
+
+            return Ok(employee);
+        }
     }
 }

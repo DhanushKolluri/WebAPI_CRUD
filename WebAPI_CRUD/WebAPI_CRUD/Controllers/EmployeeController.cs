@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI_CRUD.Data;
+using WebAPI_CRUD.Models;
 
 namespace WebAPI_CRUD.Controllers
 {
@@ -21,6 +22,15 @@ namespace WebAPI_CRUD.Controllers
             var employees = await fullStackDbContext.Employees.ToListAsync();
 
             return Ok(employees);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddEmployee([FromBody] Employee employeeRequest)
+        {
+            employeeRequest.Id = Guid.NewGuid();
+            await fullStackDbContext.AddAsync(employeeRequest);
+            await fullStackDbContext.SaveChangesAsync();
+
+            return Ok(employeeRequest);
         }
     }
 }
